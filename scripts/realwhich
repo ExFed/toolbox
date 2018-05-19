@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+function do_realwhich {
+    local WP=$(which "$1")
+    printf '%s\n' "$WP"
+    while TARGET=$(readlink "$WP")
+    do
+        printf ' -> %s\n' "$TARGET"
+        WP="$TARGET"
+    done
+}
+
+function main {
+    for WORD in "$@"
+    do
+        do_realwhich "$WORD"
+    done
+}
+
+main "$@"
