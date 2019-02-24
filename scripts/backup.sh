@@ -43,7 +43,7 @@ fi
 
 tar --verbose --exclude-vcs-ignores \
     --listed-incremental="$ARCHIVE_DIR/$ARCHIVE_BASE.snar" \
-    --create --file "$ARCHIVE_DIR/$ARCHIVE_BASE.tar.gz" "$SOURCE_DIR" > "$ARCHIVE_DIR/$ARCHIVE_BASE.log"
+    --create --file "$ARCHIVE_DIR/$ARCHIVE_BASE.tar.gz" "$SOURCE_DIR" > "$ARCHIVE_DIR/$ARCHIVE_BASE.log" 2>&1
 
 # try to remove write permissions
 chmod -w "$ARCHIVE_DIR/$ARCHIVE_BASE".*
