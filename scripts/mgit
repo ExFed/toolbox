@@ -1,0 +1,24 @@
+#!/bin/bash
+
+read -r -d '' CMD <<'EOF'
+echo '## {}'
+cd '{}'
+git $GARG
+EOF
+
+EXECMODE=S
+case "$1" in
+    -p|--parallel) EXECMODE=P; shift;;
+    --) shift;;
+esac
+
+if [[ "$EXECMODE" == P ]]
+then
+    find "$PWD" -type d -name '.git' \
+        | xargs dirname \
+        | xargs -I{} -P0 bash -c "GARG='$@'; ($CMD) > >(read -r -d '' BUFF; echo -e \"\$BUFF\") 2>&1"
+else
+    find "$PWD" -type d -name '.git' \
+        | xargs dirname \
+        | xargs -I{} bash -c "GARG='$@'; $CMD"
+fi
