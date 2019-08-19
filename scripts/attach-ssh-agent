@@ -1,0 +1,12 @@
+#!/usr/env bash
+
+SSH_AUTH_SOCK="$TMPDIR/ssh-agent/agent.sock"
+
+{
+    echo "Attempting to start ssh agent with socket $SSH_AUTH_SOCK ..."
+    eval $(ssh-agent -a "$SSH_AUTH_SOCK" || echo false)
+} || {
+    echo "Binding to existing ssh agent ..."
+    eval $(echo "SSH_AUTH_SOCK=\"$SSH_AUTH_SOCK\"; export SSH_AUTH_SOCK;")
+    ssh-add -l
+}
