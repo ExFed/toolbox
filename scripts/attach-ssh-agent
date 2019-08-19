@@ -1,4 +1,4 @@
-#!/usr/env bash
+#!/usr/bin/env bash
 
 SSH_AUTH_SOCK="$TMPDIR/ssh-agent/agent.sock"
 
