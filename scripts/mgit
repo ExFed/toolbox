@@ -6,13 +6,14 @@ case "$1" in
     --) shift;;
 esac
 
-CMD='cd "{}"; echo "## $PWD"; git '"$@"
+CMD='cd "{}"; echo "## $PWD" >&2; git '"$@"
 
 if [[ "$EXECMODE" == P ]]
 then
+    BUFFOUT='read -r -d "" BUFF; echo -e "$BUFF"'
     find "$PWD" -type d -name '.git' \
         | xargs dirname \
-        | xargs -I{} -P0 bash -c "($CMD) > >(read -r -d '' BUFF; echo -e \"\$BUFF\") 2>&1"
+        | xargs -I{} -P0 bash -c "($CMD) > >($BUFFOUT) 2> >($BUFFOUT >&2)"
 else
     find "$PWD" -type d -name '.git' \
         | xargs dirname \
